@@ -1,0 +1,61 @@
+[build-system]
+# Minimum requirements for the build system to execute.
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mlops-poc"
+
+version = "0.0.1"
+
+
+description = "Example poc for MLops testing "
+readme = "readme.md"
+requires-python = ">=3.10"
+keywords = ["Data Engineering", "Data Science"]
+
+classifiers = [
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3.10',
+    'Topic :: Scientific/Engineering',
+]
+dependencies = [
+    'importlib-metadata; python_version<="3.10"',
+    'setuptools>=65.5.0',
+    'openai>=1.12.0'
+]
+
+[tool.setuptools]
+packages = [
+    "src"
+]
+
+
+
+[project.urls]
+Homepage = "https://github.com/prithvijitguha/flowrunner"
+Documentation = "https://flowrunner.readthedocs.io/en/latest/"
+Issues = "https://github.com/prithvijitguha/flowrunner/issues"
+
+
+
+
+[project.optional-dependencies]
+doc = [
+]
+
+
+
+[options.packages.find]
+where=[
+    "src"
+]
+
+
+[tool.black]
+target-version = ['py38', 'py39']
+required-version = '23.1.0'
+include = ["flowrunner/*.py", "tests/*.py"]
+
+[tool.isort]
+skip = [".gitignore", ".dockerignore", "tests/test_examples/test_example_notebook.py"]
