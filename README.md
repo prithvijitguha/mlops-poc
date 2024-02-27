@@ -4,12 +4,13 @@
 
 ## Instructions to run:
 ```shell
-pip install .
+pip install .[dev] .
 ```
 OR
 
 ```shell
-pip install -r requirements.txt
+pip install -r requirements-dev.txt -r requirements.txt -r requirements-docs.txt
+
 ```
 
 Create a file called `.env` in the root directory with your Open AI API Key
@@ -25,3 +26,9 @@ Now run
 ```
 python src/main.py
 ```
+
+
+Some reference reading:
+(open-ai-documentation)[https://platform.openai.com/docs/introduction]
+(openai-python)[https://github.com/openai/openai-python/tree/main]
+(open-ai-cookbook)[https://github.com/openai/openai-cookbook/tree/main]
