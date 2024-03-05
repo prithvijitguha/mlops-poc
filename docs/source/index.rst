@@ -10,6 +10,8 @@ Welcome to mlops-poc's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   contributing_guide_code
+
 
 
 Indices and tables

@@ -27,8 +27,17 @@ Now run
 python src/main.py
 ```
 
+## To check the documentation, we currently use local sphinx instance
+```sh
+sphinx-build -b html docs/source/ docs/build/html
+sphinx-autobuild docs docs/build/html
+```
+
+The travel to [http://localhost:8888/](http://localhost:8888/)
+
+
 
 Some reference reading:
-(open-ai-documentation)[https://platform.openai.com/docs/introduction]
-(openai-python)[https://github.com/openai/openai-python/tree/main]
-(open-ai-cookbook)[https://github.com/openai/openai-cookbook/tree/main]
+- [open-ai-documentation](https://platform.openai.com/docs/introduction)
+- [openai-python](https://github.com/openai/openai-python/tree/main)
+- [open-ai-cookbook](https://github.com/openai/openai-cookbook/tree/main)

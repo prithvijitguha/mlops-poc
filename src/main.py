@@ -1,5 +1,11 @@
+"""The overall main program. In this we would do the following
+Take input from user -> call_ai -> get response and run query -> validate
+
+We retry 2 times before telling the user we failed.
+"""
 from openai import OpenAI
 from dotenv import load_dotenv
+from utils import call_chat, run_query
 
 import os
 
@@ -19,3 +25,8 @@ chat_completion = client.chat.completions.create(
     ],
     model="gpt-3.5-turbo",
 )
+
+
+print(chat_completion.choices.content)
+print(type(chat_completion))
+print(chat_completion)
