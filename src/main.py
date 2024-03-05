@@ -1,5 +1,11 @@
+"""The overall main program. In this we would do the following
+Take input from user -> call_ai -> get response and run query -> validate
+
+We retry 2 times before telling the user we failed.
+"""
 from openai import OpenAI
 from dotenv import load_dotenv
+from utils import call_chat, run_query
 
 import os
 

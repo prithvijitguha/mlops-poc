@@ -3,7 +3,8 @@
 
 def call_chat():
     """This function is used to call the OpenAI/Model Serving endpoint
-    We get a response and return that"""
+    We wait for a response and return that. Make sure add a timeout so we don't wait for too long
+    or incase server is down for some reason"""
     raise NotImplementedError
 
 def run_query():
