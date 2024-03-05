@@ -42,7 +42,8 @@ Issues = "https://github.com/prithvijitguha/flowrunner/issues"
 
 [project.optional-dependencies]
 doc = [
-   'sphinx>=7.2.6'
+   'sphinx>=7.2.6',
+   'sphinx-autobuild>=2024.2'
 ]
 
 dev = [
@@ -52,6 +53,7 @@ dev = [
     'black>=24.2.0',
     'sphinx>=7.2.6',
     'pre-commit>=3.6.2',
+    'sphinx-autobuild>=2024.2.4'
 ]
 
 
