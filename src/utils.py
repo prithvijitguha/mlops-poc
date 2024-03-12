@@ -1,5 +1,31 @@
 """This module details all helper functions for the application"""
 
+from openai import OpenAI
+from dotenv import load_dotenv
+
+import os
+
+PROMPT = """You are to retrieve the datasets using a SQL query with the following schema
+# ADD SCHEMA HERE
+"""
+
+load_dotenv()  # take environment variables from .env.
+
+client = OpenAI(
+    api_key=os.environ.get("OPENAI_API_KEY"),
+)
+
+chat_completion = client.chat.completions.create(
+    messages=[
+        {
+            "role": "user",
+            "content": "Say this is a test",
+        }
+    ],
+    model="gpt-3.5-turbo",
+)
+
+
 
 def call_chat():
     """This function is used to call the OpenAI/Model Serving endpoint
