@@ -3,7 +3,28 @@ from utils import call_chat
 import streamlit as st
 import time
 
-st.title("Hei! Assistant")
+
+from pygwalker.api.streamlit import StreamlitRenderer, init_streamlit_comm
+import pandas as pd
+
+# Adjust the width of the Streamlit page
+st.set_page_config(
+    page_title="Hei! InsightAssist",
+    layout="wide"
+)
+
+
+# Establish communication between pygwalker and streamlit
+init_streamlit_comm()
+
+
+# Get an instance of pygwalker's renderer. You should cache this instance to effectively prevent the growth of in-process memory.
+@st.cache_resource
+def get_pyg_renderer() -> "StreamlitRenderer":
+    df = pd.read_csv("src/web/data/RetailDataset.csv")
+    # When you need to publish your app to the public, you should set the debug parameter to False to prevent other users from writing to your chart configuration file.
+    return StreamlitRenderer(df, spec="./gw_config.json", debug=False)
+
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -34,7 +55,7 @@ if prompt := st.chat_input("What is up?"):
         # We can choose which dataset to actually query based on the user input
         # We search based on the key word used by the user
         # We have three datasets, one is sales data, other is people data from the titanic dataset
-        # Find
+
 
         # Simulate stream of response with milliseconds delay
         for chunk in assistant_response.split():
@@ -43,5 +64,11 @@ if prompt := st.chat_input("What is up?"):
             # Add a blinking cursor to simulate typing
             message_placeholder.markdown(full_response + "▌")
         message_placeholder.markdown(full_response)
+
+        # We get the pygwalker renderer instance
+        renderer = get_pyg_renderer()
+        # Finally let's render the data exploration interface
+        # Render your data exploration interface. Developers can use it to build charts by drag and drop.
+        renderer.render_explore()
     # Add assistant response to chat history
     st.session_state.messages.append({"role": "assistant", "content": full_response})
