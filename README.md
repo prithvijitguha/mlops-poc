@@ -29,7 +29,7 @@ You can install the necessary dependencies by running one of the following comma
 
 ```shell
 pip install .[dev] .
-
+```
 ## Instructions to run:
 ```shell
 pip install .[dev] .

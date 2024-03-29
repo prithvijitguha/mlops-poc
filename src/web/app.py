@@ -26,18 +26,15 @@ if prompt := st.chat_input("What is up?"):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         full_response = ""
-        # assistant_response = random.choice(
-        #     [
-        #         "Hello there! How can I assist you today?",
-        #         "Hi, human! Is there anything I can help you with?",
-        #         "Do you need help?",
-        #     ]
-        # )
 
-        # Here we call the chat function to get the response from the API 
+        # Here we call the chat function to get the response from the API
         assistant_response = call_chat(prompt)
 
         # In this section we can query the dataset the display the results to the user
+        # We can choose which dataset to actually query based on the user input
+        # We search based on the key word used by the user
+        # We have three datasets, one is sales data, other is people data from the titanic dataset
+        # Find
 
         # Simulate stream of response with milliseconds delay
         for chunk in assistant_response.split():
