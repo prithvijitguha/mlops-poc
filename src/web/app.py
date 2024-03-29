@@ -21,6 +21,10 @@ engine = create_engine('sqlite:///src/web/data/retail')
 
 sql_database = SQLDatabase(engine, include_tables=["retail"])
 
+query_engine = NLSQLTableQueryEngine(
+    sql_database=sql_database, tables=["retail"], llm=llm
+)
+
 # Establish communication between pygwalker and streamlit
 init_streamlit_comm()
 
@@ -58,9 +62,6 @@ if prompt := st.chat_input("What is up?"):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         full_response = ""
-        # Here we call the chat function to get the response from the API
-
-
         # First thing we're going to do is to feed the response to the api
         # We get a sql query as response
         sql_query = generate_sql_query(prompt)
@@ -80,9 +81,6 @@ if prompt := st.chat_input("What is up?"):
         except Exception as e: #TODO: Add specific exception for failure in sql execution
             print(e)
             try:
-                query_engine = NLSQLTableQueryEngine(
-                    sql_database=sql_database, tables=["retail"], llm=llm
-                )
                 assistant_response = query_engine.query(prompt)
             except:
                 assistant_response = "I'm sorry, I couldn't understand your request. Please try again."
