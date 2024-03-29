@@ -1,6 +1,34 @@
-# MLOps POC
+# MLOps Proof of Concept (POC)
 
-## Example poc for MLops testing
+This repository contains a Proof of Concept (POC) for a self-service reporting assistant using MLOps principles. The assistant leverages the OpenAI API to provide an interactive and user-friendly interface for generating reports.
+
+
+[![codecov](https://codecov.io/gh/prithvijitguha/mlops-poc/branch/main/graph/badge.svg?token=0B8X2WF0OA)](https://codecov.io/gh/prithvijitguha/FlowRunner)&nbsp;
+![build and test](https://github.com/prithvijitguha/mlops-poc/actions/workflows/build.yml/badge.svg?branch=main)&nbsp;
+![documentation](https://readthedocs.org/projects/mlops-poc/badge/?version=latest)&nbsp;
+[![Documentation Status](https://readthedocs.org/projects/mlops/badge/?version=latest)](https://flowrunner.readthedocs.io/en/latest/?badge=latest)&nbsp;
+[![Python 3.11](https://img.shields.io/badge/python-3.11-%2334D058.svg)](https://www.python.org/downloads/release/python-390/)&nbsp;
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)&nbsp;
+[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)&nbsp;
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
+
+## Technical Documentation
+
+For more detailed information about the project, please refer to our [technical documentation on ReadTheDocs](https://mlops-poc.readthedocs.io/en/latest/).
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.11 or higher
+- pip
+
+### Installation
+
+You can install the necessary dependencies by running one of the following commands:
+
+```shell
+pip install .[dev] .
 
 ## Instructions to run:
 ```shell
@@ -13,7 +41,9 @@ pip install -r requirements-dev.txt -r requirements.txt -r requirements-docs.txt
 
 ```
 
-Create a file called `.env` in the root directory with your Open AI API Key
+### Configuration
+
+Create a .env file in the root directory of the project and add your OpenAI API Key:
 
 Your file contents should look like
 
@@ -22,20 +52,14 @@ Your file contents should look like
 OPENAI_API_KEY=my-open-ai-api-key
 ```
 
-Now run
+Replace my-open-ai-api-key with your actual OpenAI API key.
+
+### Running the application 
+
+After installing the dependencies and setting up the configuration, you can run the application with the following command:
 ```
 python src/main.py
 ```
-
-## To check the documentation, we currently use local sphinx instance
-```sh
-sphinx-build -b html docs/source/ docs/build/html
-sphinx-autobuild docs docs/build/html
-```
-
-The travel to [http://localhost:8888/](http://localhost:8888/)
-
-
 
 Some reference reading:
 - [open-ai-documentation](https://platform.openai.com/docs/introduction)
