@@ -16,16 +16,14 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
-      run: |
-        pip install build>=0.10.0
-        pip install .[dev]
     # the below pre commit does all linting checks including black and linting tools
     # We can enable this once we have better code coverage and linting
     # - name: pre-commit
     #   uses: pre-commit/action@v3.0.0
     - name: Run Tests
       run: |
+        pip install build>=0.10.0
+        pip install .[dev]
         python -m coverage run -m pytest --continue-on-collection-errors
         python -m coverage xml
     - name: Upload coverage reports to Codecov
