@@ -47,7 +47,7 @@ Create a .env file in the root directory of the project and add your OpenAI API 
 
 Your file contents should look like
 
-```
+```yaml
 # environment variables defined inside a .env file
 OPENAI_API_KEY=my-open-ai-api-key
 ```
@@ -57,7 +57,7 @@ Replace my-open-ai-api-key with your actual OpenAI API key.
 ### Running the application
 
 After installing the dependencies and setting up the configuration, you can run the application with the following command:
-```
+```shell
 python src/main.py
 ```
 
