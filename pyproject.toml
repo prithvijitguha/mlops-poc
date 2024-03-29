@@ -71,3 +71,8 @@ include = ["flowrunner/*.py", "tests/*.py"]
 
 [tool.isort]
 skip = [".gitignore", ".dockerignore", "tests/test_examples/test_example_notebook.py"]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
