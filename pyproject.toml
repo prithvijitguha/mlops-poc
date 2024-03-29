@@ -74,5 +74,12 @@ skip = [".gitignore", ".dockerignore", "tests/test_examples/test_example_noteboo
 
 [tool.pytest.ini_options]
 pythonpath = [
-  "src"
+    "src"
+    ]
+testpaths = [
+    "tests"
+]
+addopts = [
+    "--cache-clear",
+    "-v"
 ]
