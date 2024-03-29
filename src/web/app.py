@@ -49,12 +49,16 @@ if prompt := st.chat_input("What is up?"):
         full_response = ""
 
         # Here we call the chat function to get the response from the API
-        assistant_response = call_chat(prompt)
+        #assistant_response = call_chat(prompt)
 
-        # In this section we can query the dataset the display the results to the user
-        # We can choose which dataset to actually query based on the user input
-        # We search based on the key word used by the user
-        # We have three datasets, one is sales data, other is people data from the titanic dataset
+
+        # First thing we're going to do is to feed the response to the api
+        # We get a sql query as response
+        # Let's try to execute the query
+        # If the query is successful, we get the result and display it
+        # If the query is not successful, we use the query engine to get the response
+        # If the query engine is not successful, we return an error response to retry n
+
 
 
         # Simulate stream of response with milliseconds delay
