@@ -64,6 +64,8 @@ if prompt := st.chat_input("What is up?"):
         # First thing we're going to do is to feed the response to the api
         # We get a sql query as response
         sql_query = generate_sql_query(prompt)
+        print("Generated SQL Query: ", sql_query)
+
         # Let's try to execute the query
         try:
             # If the query is successful, we get the result and display it
