@@ -1,5 +1,6 @@
+from utils import call_chat
+
 import streamlit as st
-import random
 import time
 
 st.title("Hei! Assistant")
@@ -25,16 +26,16 @@ if prompt := st.chat_input("What is up?"):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         full_response = ""
-        assistant_response = random.choice(
-            [
-                "Hello there! How can I assist you today?",
-                "Hi, human! Is there anything I can help you with?",
-                "Do you need help?",
-            ]
-        )
+        # assistant_response = random.choice(
+        #     [
+        #         "Hello there! How can I assist you today?",
+        #         "Hi, human! Is there anything I can help you with?",
+        #         "Do you need help?",
+        #     ]
+        # )
 
-        # Insert the open ai http request here. 
-        # We have to import the call api functions and return the response here
+        # Here we call the chat function to get the response from the API 
+        assistant_response = call_chat(prompt)
 
         # In this section we can query the dataset the display the results to the user
 

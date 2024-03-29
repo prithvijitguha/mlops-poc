@@ -5,7 +5,7 @@ We retry 2 times before telling the user we failed.
 """
 from openai import OpenAI
 from dotenv import load_dotenv
-from utils import call_chat, run_query
+from web.utils import call_chat, run_query
 
 import os
 
