@@ -3,7 +3,7 @@
 This repository contains a Proof of Concept (POC) for a self-service reporting assistant using MLOps principles. The assistant leverages the OpenAI API to provide an interactive and user-friendly interface for generating reports.
 
 
-[![codecov](https://codecov.io/gh/prithvijitguha/mlops-poc/branch/main/graph/badge.svg?token=0B8X2WF0OA)](https://codecov.io/gh/prithvijitguha/FlowRunner)&nbsp;
+[![codecov](https://codecov.io/gh/prithvijitguha/mlops-poc/graph/badge.svg?token=HFNPEOC9NS)](https://codecov.io/gh/prithvijitguha/mlops-poc)&nbsp;
 ![build and test](https://github.com/prithvijitguha/mlops-poc/actions/workflows/build.yml/badge.svg?branch=main)&nbsp;
 ![documentation](https://readthedocs.org/projects/mlops-poc/badge/?version=latest)&nbsp;
 [![Documentation Status](https://readthedocs.org/projects/mlops/badge/?version=latest)](https://flowrunner.readthedocs.io/en/latest/?badge=latest)&nbsp;
@@ -29,7 +29,7 @@ You can install the necessary dependencies by running one of the following comma
 
 ```shell
 pip install .[dev] .
-
+```
 ## Instructions to run:
 ```shell
 pip install .[dev] .
@@ -47,17 +47,17 @@ Create a .env file in the root directory of the project and add your OpenAI API 
 
 Your file contents should look like
 
-```
+```yaml
 # environment variables defined inside a .env file
 OPENAI_API_KEY=my-open-ai-api-key
 ```
 
 Replace my-open-ai-api-key with your actual OpenAI API key.
 
-### Running the application 
+### Running the application
 
 After installing the dependencies and setting up the configuration, you can run the application with the following command:
-```
+```shell
 python src/main.py
 ```
 

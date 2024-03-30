@@ -7,3 +7,8 @@ pytest>=8.1.1
 streamlit>=1.32.2
 python-dotenv>=1.0.1
 coverage>=7.4.4
+SQLAlchemy>=2.0.29
+pygwalker>=0.4.7
+pandas>=2.0.0
+llama-index-llms-openai
+llama-index
