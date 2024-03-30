@@ -3,26 +3,28 @@ from sqlalchemy import create_engine
 from llama_index.core import SQLDatabase
 from llama_index.llms.openai import OpenAI
 from llama_index.core.query_engine import NLSQLTableQueryEngine
+from llama_index.core.query_engine import PandasQueryEngine
 
 import streamlit as st
 import time
 
-
 from pygwalker.api.streamlit import StreamlitRenderer, init_streamlit_comm
 import pandas as pd
+
+MODEL_NAME = "gpt-3.5-turbo"
 
 # Adjust the width of the Streamlit page
 st.set_page_config(page_title="Hei! InsightAssist", layout="wide")
 
+llm = OpenAI(temperature=0.1, model=MODEL_NAME)
 
-llm = OpenAI(temperature=0.1, model="gpt-3.5-turbo")
+# engine = create_engine('sqlite:///src/web/data/retail')
+engine = create_engine("sqlite:///src/web/data/dataset_all")
 
-engine = create_engine('sqlite:///src/web/data/retail')
+sql_database = SQLDatabase(engine, include_tables=["retail", "hr"])
 
-sql_database = SQLDatabase(engine, include_tables=["retail"])
-
-query_engine = NLSQLTableQueryEngine(
-    sql_database=sql_database, tables=["retail"], llm=llm
+sql_query_engine = NLSQLTableQueryEngine(
+    sql_database=sql_database, tables=["retail", "hr"], llm=llm
 )
 
 # Establish communication between pygwalker and streamlit
@@ -47,8 +49,6 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# Let's setup the database connections here
-# We can use the connection to run the sql queries
 
 # Accept user input
 if prompt := st.chat_input("What is up?"):
@@ -62,35 +62,54 @@ if prompt := st.chat_input("What is up?"):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         full_response = ""
-        # First thing we're going to do is to feed the response to the api
-        # We get a sql query as response
-        sql_query = generate_sql_query(prompt)
-        print("Generated SQL Query: ", sql_query)
 
-        # Let's try to execute the query
-        try:
-            # If the query is successful, we get the result and display it
-            with engine.connect() as conn:
-                df = pd.read_sql_query(sql_query, conn)
-                # We get the pygwalker renderer instance
-                renderer = get_pyg_renderer(dataframe=df)
-                # Finally let's render the data exploration interface
-                # Render your data exploration interface. Developers can use it to build charts by drag and drop.
-                renderer.render_explore()
-        # If the query is not successful, we use the query engine to get the response
-        except Exception as e: #TODO: Add specific exception for failure in sql execution
-            print(e)
+        # We get the user input
+        # Let's pass it to the query engine to get the response
+        response = sql_query_engine.query(prompt)
+        # Once we get the response let's log it for debugging
+        print(response)
+        # Now's lets parse the response
+        return_response = response.response  # We need the syntax answer as well
+        generated_sql_query = response.metadata[
+            "sql_query"
+        ]  # We need to get the query part of it
+
+        # We check if 'visualize' in the sql, then we pass the sql generated query
+        # to pygwalker to display the dataset                                                                                                                                                                                                                                                                                                                                                              # then we query it
+        if (
+            "visualize" in prompt.lower()
+        ):  # Lowercase the prompt to make it case insensitive
+            print("Generated SQL Query: ", generated_sql_query)
             try:
-                assistant_response = query_engine.query(prompt)
-            except:
-                assistant_response = "I'm sorry, I couldn't understand your request. Please try again."
-                # If the query engine is not successful, we return an error response to retry
-                # Simulate stream of response with milliseconds delay
-                for chunk in assistant_response.split():
+                # If the query is successful, we get the result and display it
+                with engine.connect() as conn:
+                    df = pd.read_sql_query(generated_sql_query, conn)
+                    # We get the pygwalker renderer instance
+                    renderer = get_pyg_renderer(dataframe=df)
+                    # Finally let's render the data exploration interface
+                    # Render your data exploration interface. Developers can use it to build charts by drag and drop.
+                    renderer.render_explore()
+            # If the query is not successful, we use the query engine to get the response
+            except (
+                Exception
+            ) as e:  # TODO: Add specific exception for failure in sql execution
+                print(e)
+                for chunk in "Error generating visualization, please retry".split():
                     full_response += chunk + " "
                     time.sleep(0.05)
                     # Add a blinking cursor to simulate typing
                     message_placeholder.markdown(full_response + "▌")
                 message_placeholder.markdown(full_response)
+        else:
+            # If we don't have 'visualize' in the prompt, we return the response
+            # In this case would be more 'definitive' answer set
+            for chunk in return_response.split():
+                full_response += chunk + " "
+                time.sleep(0.05)
+                # Add a blinking cursor to simulate typing
+                message_placeholder.markdown(full_response + "▌")
+            message_placeholder.markdown(full_response)
+
+
     # Add assistant response to chat history
     st.session_state.messages.append({"role": "assistant", "content": full_response})

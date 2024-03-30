@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import os
 
 
-
 load_dotenv()  # take environment variables from .env.
 
 
@@ -51,21 +50,19 @@ def generate_sql_query(question: str, model_name="gpt-3.5-turbo") -> str:
                     Discount decimal,
                     Profit decimal,
                     PRIMARY KEY (RowID)
-                    );"""
+                    );""",
             },
-            {
-                "role": "user",
-                "content": f"Write a SQL query which computes {question}"
-            }
+            {"role": "user", "content": f"Write a SQL query which computes {question}"},
         ],
         model=model_name,
         temperature=0.7,
     )
 
-    chat_choices = chat_completion.choices # This is a list of choices returned by the model
+    chat_choices = (
+        chat_completion.choices
+    )  # This is a list of choices returned by the model
     # We select the first choice as the response
-    return chat_choices[0].message.content.replace('`', '').split('sql\n')[1]
-
+    return chat_choices[0].message.content.replace("`", "").split("sql\n")[1]
 
 
 def run_query():
