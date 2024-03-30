@@ -2,9 +2,39 @@
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
-
+from llama_index.core import SQLDatabase
+from sqlalchemy import create_engine
+from llama_index.core import SQLDatabase
+from llama_index.llms.openai import OpenAI as llamaOpenAI
+from llama_index.core.query_engine import NLSQLTableQueryEngine
 
 load_dotenv()  # take environment variables from .env.
+
+MODEL_NAME = "gpt-3.5-turbo"
+
+
+def setup_db_llm(model=MODEL_NAME):
+    """Set up the database connection and the LLM model
+
+    Args:
+        model: str: The model name to use for the LLM. Default is "gpt-3.5-turbo"
+
+    Returns:
+        sql_query_engine: llama_index.core.query_engine.NLSQLTableQueryEngine
+        sql_database: llama_index.core.SQLDatabase
+        engine: sqlalchemy.engine.base.Engine
+    """
+    llm = llamaOpenAI(temperature=0.1, model=model)
+    # We setup the database connections here
+    engine = create_engine("sqlite:///src/web/data/dataset_all")
+
+    sql_database = SQLDatabase(engine, include_tables=["retail", "hr"])
+
+    sql_query_engine = NLSQLTableQueryEngine(
+        sql_database=sql_database, tables=["retail", "hr"], llm=llm
+    )
+
+    return sql_query_engine, sql_database, engine
 
 
 def generate_sql_query(question: str, model_name="gpt-3.5-turbo") -> str:
@@ -50,25 +80,17 @@ def generate_sql_query(question: str, model_name="gpt-3.5-turbo") -> str:
                     Discount decimal,
                     Profit decimal,
                     PRIMARY KEY (RowID)
-                    );""",
+                    );"""
             },
-            {"role": "user", "content": f"Write a SQL query which computes {question}"},
+            {
+                "role": "user",
+                "content": f"Write a SQL query which computes {question}"
+            }
         ],
         model=model_name,
         temperature=0.7,
     )
 
-    chat_choices = (
-        chat_completion.choices
-    )  # This is a list of choices returned by the model
+    chat_choices = chat_completion.choices # This is a list of choices returned by the model
     # We select the first choice as the response
-    return chat_choices[0].message.content.replace("`", "").split("sql\n")[1]
-
-
-def run_query():
-    """The assumption is we will get an SQL query as output which we can use to query the table
-    This is going to run the query and return the result.
-
-    This function must raise an error if its not valid SQL
-    """
-    raise NotImplementedError
+    return chat_choices[0].message.content.replace('`', '').split('sql\n')[1]

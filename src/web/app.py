@@ -1,10 +1,25 @@
-from utils import generate_sql_query
+"""
+This module, `app.py`, is the main entry point for the Hei! InsightAssist application.
+
+The application uses the OpenAI GPT-3.5-turbo model to provide a natural language interface for querying data from a SQLite database. The application is built with Streamlit and uses the Llama Index library for natural language processing and the Pygwalker library for data visualization.
+
+The application provides a chat interface where users can input natural language queries. The queries are processed by the OpenAI model and converted into SQL queries, which are then executed against the SQLite database. The results are displayed in the chat interface and, if requested by the user, visualized using Pygwalker.
+
+The application also includes error handling for failed SQL queries and a debug mode for chart configuration.
+
+Functions:
+    get_pyg_renderer(dataframe: pd.DataFrame) -> "StreamlitRenderer":
+        Returns an instance of Pygwalker's renderer for data visualization.
+
+This module is part of the Hei! InsightAssist project.
+"""
+
 from sqlalchemy import create_engine
 from llama_index.core import SQLDatabase
 from llama_index.llms.openai import OpenAI
 from llama_index.core.query_engine import NLSQLTableQueryEngine
-from llama_index.core.query_engine import PandasQueryEngine
 
+from utils import setup_db_llm, generate_sql_query
 import streamlit as st
 import time
 
@@ -16,16 +31,8 @@ MODEL_NAME = "gpt-3.5-turbo"
 # Adjust the width of the Streamlit page
 st.set_page_config(page_title="Hei! InsightAssist", layout="wide")
 
-llm = OpenAI(temperature=0.1, model=MODEL_NAME)
 
-# engine = create_engine('sqlite:///src/web/data/retail')
-engine = create_engine("sqlite:///src/web/data/dataset_all")
-
-sql_database = SQLDatabase(engine, include_tables=["retail", "hr"])
-
-sql_query_engine = NLSQLTableQueryEngine(
-    sql_database=sql_database, tables=["retail", "hr"], llm=llm
-)
+sql_query_engine, sql_database, engine = setup_db_llm()
 
 # Establish communication between pygwalker and streamlit
 init_streamlit_comm()
@@ -62,26 +69,19 @@ if prompt := st.chat_input("What is up?"):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         full_response = ""
-
-        # We get the user input
-        # Let's pass it to the query engine to get the response
-        response = sql_query_engine.query(prompt)
-        # Once we get the response let's log it for debugging
-        print(response)
-        # Now's lets parse the response
-        return_response = response.response  # We need the syntax answer as well
-        generated_sql_query = response.metadata[
-            "sql_query"
-        ]  # We need to get the query part of it
-
         # We check if 'visualize' in the sql, then we pass the sql generated query
         # to pygwalker to display the dataset                                                                                                                                                                                                                                                                                                                                                              # then we query it
         if (
             "visualize" in prompt.lower()
         ):  # Lowercase the prompt to make it case insensitive
+            # We also can't pass visualize to the query engine since it takes too much time and
+            # we don't need the response, we just need the query
+            # So instead we use our own wrapper function to get the query
+            generated_sql_query = generate_sql_query(prompt)
             print("Generated SQL Query: ", generated_sql_query)
+            # Then we pass the query to pandas read sql query to get the dataframe
+            # We pass the dataframe to the pygwalker renderer
             try:
-                # If the query is successful, we get the result and display it
                 with engine.connect() as conn:
                     df = pd.read_sql_query(generated_sql_query, conn)
                     # We get the pygwalker renderer instance
@@ -101,7 +101,17 @@ if prompt := st.chat_input("What is up?"):
                     message_placeholder.markdown(full_response + "▌")
                 message_placeholder.markdown(full_response)
         else:
-            # If we don't have 'visualize' in the prompt, we return the response
+            # If there is no visualize in the prompt, we pass it to the query engine
+            # We get the user input
+            # Let's pass it to the query engine to get the response
+            response = sql_query_engine.query(prompt)
+            # Once we get the response let's log it for debugging
+            print(response)
+            # Now's lets parse the response
+            return_response = response.response  # We need the syntax answer as well
+            generated_sql_query = response.metadata[
+                "sql_query"
+            ]  # We need to get the query part of it
             # In this case would be more 'definitive' answer set
             for chunk in return_response.split():
                 full_response += chunk + " "
