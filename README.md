@@ -12,6 +12,10 @@ This repository contains a Proof of Concept (POC) for a self-service reporting a
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)&nbsp;
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 
+# Demo Screenshot:
+
+![Hei Screenshot](docs/source/static/hei_screenshot.png)
+
 ## Technical Documentation
 
 For more detailed information about the project, please refer to our [technical documentation on ReadTheDocs](https://mlops-poc.readthedocs.io/en/latest/).
@@ -58,7 +62,7 @@ Replace my-open-ai-api-key with your actual OpenAI API key.
 
 After installing the dependencies and setting up the configuration, you can run the application with the following command:
 ```shell
-python src/main.py
+streamlit run src/web/app.py
 ```
 
 Some reference reading:
