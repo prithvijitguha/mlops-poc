@@ -10,9 +10,9 @@ def setup_db():
     engine = create_engine("sqlite:///dataset_all")
 
     # Let's read the local csv for retail data
-    pd.read_csv("RetailDataset.csv").to_sql("retail", engine, if_exists="replace")
+    pd.read_csv("RetailDataset_v2.csv").to_sql("retail", engine, if_exists="replace")
     # and store it in the database
-    pd.read_csv("HRDataset_v14.csv").to_sql("hr", engine, if_exists="replace")
+    pd.read_csv("HRDataset_v15.csv").to_sql("hr", engine, if_exists="replace")
 
 
 setup_db()

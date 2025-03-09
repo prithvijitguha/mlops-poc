@@ -9,6 +9,8 @@ from web.utils import call_chat, run_query
 
 import os
 
+MODEL_NAME="gpt-3.5-turbo" # The global reference to the model name
+
 
 load_dotenv()  # take environment variables from .env.
 
@@ -23,10 +25,5 @@ chat_completion = client.chat.completions.create(
             "content": "Say this is a test",
         }
     ],
-    model="gpt-3.5-turbo",
+    model=MODEL_NAME,
 )
-
-
-print(chat_completion.choices.content)
-print(type(chat_completion))
-print(chat_completion)

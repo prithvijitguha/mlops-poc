@@ -13,6 +13,7 @@ load_dotenv()  # take environment variables from .env.
 MODEL_NAME = "gpt-3.5-turbo"
 
 
+
 def setup_db_llm(model=MODEL_NAME):
     """Set up the database connection and the LLM model
 
@@ -57,29 +58,75 @@ def generate_sql_query(question: str, model_name="gpt-3.5-turbo") -> str:
             {
                 "role": "system",
                 "content": """Given the following SQL tables, your job is to write queries given a user's request:
-                CREATE TABLE Retail (
-                    RowID int,
-                    OrderID varchar(255),
-                    OrderDate date,
-                    ShipDate date,
-                    ShipMode varchar(255),
-                    CustomerID varchar(255),
-                    CustomerName varchar(255),
-                    Segment varchar(255),
-                    Country varchar(255),
-                    City varchar(255),
-                    State varchar(255),
-                    PostalCode int,
-                    Region varchar(255),
-                    ProductID varchar(255),
-                    Category varchar(255),
-                    SubCategory varchar(255),
-                    ProductName varchar(255),
-                    Sales decimal,
-                    Quantity int,
-                    Discount decimal,
-                    Profit decimal,
-                    PRIMARY KEY (RowID)
+                Retail Table: A table containing retail data for Walmart USA, detailing the orders and their details
+                Description:
+                Schema:
+                |-- row_id: string (nullable = true)
+                |-- order_id: string (nullable = true)
+                |-- order_date: date (nullable = true)
+                |-- ship_date: date (nullable = true)
+                |-- ship_mode: string (nullable = true)
+                |-- customer_id: string (nullable = true)
+                |-- customer_name: string (nullable = true)
+                |-- segment: string (nullable = true)
+                |-- country: string (nullable = true)
+                |-- city: string (nullable = true)
+                |-- state: string (nullable = true)
+                |-- postal_code: string (nullable = true)
+                |-- region: string (nullable = true)
+                |-- product_id: string (nullable = true)
+                |-- category: string (nullable = true)
+                |-- sub-category: string (nullable = true)
+                |-- product_name: string (nullable = true)
+                |-- sales: string (nullable = true)
+                |-- quantity: string (nullable = true)
+                |-- discount: string (nullable = true)
+                |-- profit: string (nullable = true)
+
+                HR Table:
+                Description: Table containing HR data for Walmart USA, detailing the employees and their details
+                Schema:
+                |-- Employee_Name: string (nullable = true)
+                |-- EmpID: string (nullable = true)
+                |-- MarriedID: string (nullable = true)
+                |-- MaritalStatusID: string (nullable = true)
+                |-- GenderID: string (nullable = true)
+                |-- EmpStatusID: string (nullable = true)
+                |-- DeptID: string (nullable = true)
+                |-- PerfScoreID: string (nullable = true)
+                |-- FromDiversityJobFairID: string (nullable = true)
+                |-- Salary: string (nullable = true)
+                |-- Termd: string (nullable = true)
+                |-- PositionID: string (nullable = true)
+                |-- Position: string (nullable = true)
+                |-- State: string (nullable = true)
+                |-- Zip: string (nullable = true)
+                |-- DOB: date (nullable = true)
+                |-- Sex: string (nullable = true)
+                |-- MaritalDesc: string (nullable = true)
+                |-- CitizenDesc: string (nullable = true)
+                |-- HispanicLatino: string (nullable = true)
+                |-- RaceDesc: string (nullable = true)
+                |-- DateofHire: string (nullable = true)
+                |-- DateofTermination: string (nullable = true)
+                |-- TermReason: string (nullable = true)
+                |-- EmploymentStatus: string (nullable = true)
+                |-- Department: string (nullable = true)
+                |-- ManagerName: string (nullable = true)
+                |-- ManagerID: string (nullable = true)
+                |-- RecruitmentSource: string (nullable = true)
+                |-- PerformanceScore: string (nullable = true)
+                |-- EngagementSurvey: string (nullable = true)
+                |-- EmpSatisfaction: string (nullable = true)
+                |-- SpecialProjectsCount: string (nullable = true)
+                |-- LastPerformanceReview_Date: string (nullable = true)
+                |-- DaysLateLast30: string (nullable = true)
+                |-- Absences: string (nullable = true)
+
+
+
+
+
                     );"""
             },
             {

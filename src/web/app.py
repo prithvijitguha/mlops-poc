@@ -19,14 +19,14 @@ from llama_index.core import SQLDatabase
 from llama_index.llms.openai import OpenAI
 from llama_index.core.query_engine import NLSQLTableQueryEngine
 
-from utils import setup_db_llm, generate_sql_query
+from utils import setup_db_llm, generate_sql_query, MODEL_NAME
 import streamlit as st
 import time
 
 from pygwalker.api.streamlit import StreamlitRenderer, init_streamlit_comm
 import pandas as pd
 
-MODEL_NAME = "gpt-3.5-turbo"
+# MODEL_NAME = "gpt-3.5-turbo"
 
 # Adjust the width of the Streamlit page
 st.set_page_config(page_title="Hei! InsightAssist", layout="wide")
