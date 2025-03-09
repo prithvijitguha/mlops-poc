@@ -58,7 +58,7 @@ Replace my-open-ai-api-key with your actual OpenAI API key.
 
 After installing the dependencies and setting up the configuration, you can run the application with the following command:
 ```shell
-python src/main.py
+streamlit run src/web/app.py
 ```
 
 Some reference reading:
