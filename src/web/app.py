@@ -26,7 +26,8 @@ import time
 from pygwalker.api.streamlit import StreamlitRenderer, init_streamlit_comm
 import pandas as pd
 
-# MODEL_NAME = "gpt-3.5-turbo"
+# Read the SQLite path from the test.py file
+sql_lite_path = "sqlite:///src/web/data/dataset_all"
 
 # Adjust the width of the Streamlit page
 st.set_page_config(page_title="Hei! InsightAssist", layout="wide")
@@ -46,10 +47,50 @@ def get_pyg_renderer(dataframe: pd.DataFrame) -> "StreamlitRenderer":
     # to prevent other users from writing to your chart configuration file.
     return StreamlitRenderer(dataframe, spec="./gw_config.json", debug=False)
 
+from sqlalchemy import create_engine, MetaData
+
+
+
+# Create an engine that stores data in the local directory's SQLite database
+engine = create_engine(sql_lite_path)
+
+# Create a MetaData instance
+metadata = MetaData()
+
+# Reflect the tables from the database
+metadata.reflect(bind=engine)
+
+
+# Display the metadata
+metadata_string = ""
+
+# Establish connection with the database
+# Then iterate over the tables and display them
+with engine.connect() as conn:
+    metadata_string = "\n".join([f"- Table Name: **{tb_name}**" for tb_name in metadata.tables])
+
 
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
+
+# Display default greeting if chat history is empty
+if not st.session_state.messages:
+    st.session_state.messages.append({
+        "role": "assistant",
+        "content": f"""Hello! I am Hei!InsightsAssistant. I will help you get insights on the data in your project.
+
+The following tables are available in the database:
+
+{metadata_string}
+
+Here are some example questions you can ask:
+
+- **Tell me about the data**
+- **What are the highest selling products in the state of California?**
+- **How many active employees are present? i.e., not terminated.**
+- **How many male vs female employees**"""
+    })
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
